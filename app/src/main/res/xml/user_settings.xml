@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) 2011 ETH Zurich.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the GNU Public License v2.0
+  which accompanies this distribution, and is available at
+  http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+  
+  Contributors:
+      Paolo Carta - Implementation
+      Theus Hossmann - Implementation
+      Steven Meliopoulos - Implementation
+      Dominik Schatzmann - Message specification
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="@string/pref_title_category_notifications"
+        android:title="@string/pref_title_category_notifications" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="@string/pref_key_notify_tweets"
+            android:selectable="true"
+            android:title="@string/pref_title_notify_new_tweets" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="@string/pref_key_notify_mentions"
+            android:selectable="true"
+            android:title="@string/pref_title_notify_mentions" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="@string/pref_key_notify_direct_messages"
+            android:selectable="true"
+            android:title="@string/pref_title_notify_direct_messages" />
+
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:key="@string/pref_key_notification_ringtone"
+            android:ringtoneType="notification"
+            android:showDefault="true"
+            android:title="@string/pref_title_notification_ringtone" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_notification_vibrate"
+            android:title="@string/pref_title_notification_vibrate" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="prefCategoryTwitter"
+        android:title="@string/pref_title_category_twitter" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="@string/pref_key_use_location"
+            android:selectable="true"
+            android:summaryOff="@string/pref_summary_use_location_off"
+            android:summaryOn="@string/pref_summary_use_location_on"
+            android:title="@string/pref_title_use_location" >
+        </CheckBoxPreference>
+
+        <ListPreference
+            android:defaultValue="5"
+            android:enabled="true"
+            android:entries="@array/backgroundUpdateIntervalNames"
+            android:entryValues="@array/backgroundUpdateIntervalValues"
+            android:key="@string/pref_key_update_interval"
+            android:title="@string/pref_title_background_updates" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="prefCategoryOfflineMode"
+        android:title="@string/pref_title_category_offline_mode" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="@string/pref_key_offline_mode"
+            android:selectable="true"
+            android:summaryOn="@string/pref_summary_automatic_web_download_on"
+            android:summaryOff="@string/pref_summary_automatic_web_download_off"
+            android:title="@string/pref_title_automatic_web_download" >
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="prefDisasterMode"
+            android:enabled="true"
+            android:key="@string/pref_key_web_share"
+            android:selectable="true"
+            android:summaryOn="@string/pref_summary_web_page_sharing_on"
+            android:summaryOff="@string/pref_summary_web_page_sharing_off"
+            android:title="@string/pref_title_web_page_sharing" >
+        </CheckBoxPreference>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="prefCategoryDisasterMode"
+        android:title="@string/pref_title_category_disater_mode" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="@string/pref_key_disaster_mode"
+            android:selectable="true"
+            android:title="@string/pref_title_disater_mode" >
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="@string/pref_key_tds_communication"
+            android:selectable="true"
+            android:summaryOn="@string/pref_summary_tds_communication_on"
+            android:summaryOff="@string/pref_summary_tds_communication_off"
+            android:title="@string/pref_title_tds_communication" >
+        </CheckBoxPreference>
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="bottomStatusBarVisibility" format="integer">
+
+        <!-- Visible on screen; the default value. -->
+        <enum name="visible" value="0" />
+        <!-- Completely hidden, as if the view had not been added. -->
+        <enum name="gone" value="2" />
+    </attr>
+    <attr name="accentColor1" format="color" />
+    <attr name="accentColor2" format="color" />
+    <attr name="accentColor3" format="color" />
+    <attr name="solidButtonStyle" format="string" />
+
+    <declare-styleable name="LoadingBar">
+        <attr name="color" format="color" />
+    </declare-styleable>
+
+    
+    <declare-styleable name="MagicTextView">
+		<attr name="innerShadowColor" format="color"/>
+		<attr name="innerShadowRadius" format="float"/>
+		<attr name="innerShadowDx" format="float"/>
+		<attr name="innerShadowDy" format="float"/>
+
+		<attr name="outerShadowColor" format="color"/>
+		<attr name="outerShadowRadius" format="float"/>
+		<attr name="outerShadowDx" format="float"/>
+		<attr name="outerShadowDy" format="float"/>
+
+		<attr name="typeface" format="string" />
+
+		<attr name="foreground" format="reference|color"/>
+		<attr name="background" format="reference|color"/>
+
+		<attr name="strokeWidth" format="float" />
+		<attr name="strokeMiter" format="float" />
+		<attr name="strokeColor" format="color" />
+		<attr name="strokeJoinStyle">
+		    <enum name="miter" value="0" />
+		    <enum name="bevel" value="1" />
+		    <enum name="round" value="2" />
+		</attr>
+	</declare-styleable>
+    
+</resources>

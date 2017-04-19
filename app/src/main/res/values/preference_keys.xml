@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- User settings -->
+    <string name="pref_key_notification_ringtone" translatable="false">pref_key_notification_ringtone</string>
+    <string name="pref_key_notification_vibrate" translatable="false">pref_key_notification_vibrate</string>
+    <string name="pref_key_offline_mode" translatable="false">prefOfflineMode</string>
+    <string name="pref_key_web_share" translatable="false">prefWebShare</string>
+    <string name="pref_key_disaster_mode" translatable="false">prefDisasterMode</string>
+    <string name="pref_key_tds_communication" translatable="false">refTDSCommunication</string>
+    <string name="pref_key_update_interval" translatable="false">prefUpdateInterval</string>
+    <string name="pref_key_use_location" translatable="false">prefUseLocation</string>
+    <string name="pref_key_notify_tweets" translatable="false">prefNotifyTweets</string>
+    <string name="pref_key_notify_mentions" translatable="false">prefNotifyMentions</string>
+    <string name="pref_key_notify_direct_messages" translatable="false">prefNotifyDirectMessages</string>
+
+    <!-- app settings -->
+    <string name="pref_key_disastermode_has_been_used" translatable="false">pref_key_disastermode_has_been_used</string>
+    <string name="pref_key_timeline_seen_until" translatable="false">pref_key_timeline_seen_until</string>
+    <string name="pref_key_timeline_notified_until" translatable="false">pref_key_timeline_notified_until</string>
+    <string name="pref_key_mentions_seen_until" translatable="false">pref_key_mentions_seen_until</string>
+    <string name="pref_key_mentions_notified_until" translatable="false">pref_key_mentions_notified_until</string>
+    <string name="pref_key_direct_messages_seen_until" translatable="false">pref_key_direct_messages_seen_until</string>
+    <string name="pref_key_direct_messages_notified_until" translatable="false">pref_key_direct_messages_notified_until</string>
+    <string name="pref_key_phone_number" translatable="false">phone_no.</string>
+
+</resources>
