@@ -27,6 +27,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
@@ -50,6 +51,13 @@ import ch.ethz.twimight.util.SDCardHelper;
 import ch.ethz.twimight.views.ClickableImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * The activity to write a new tweet.
@@ -345,7 +353,34 @@ public class ComposeTweetActivity extends ThemeSelectorActivity {
 
 				ContentValues cv = createContentValues();
 
-			if (Preferences.getBoolean(ComposeTweetActivity.this, R.string.pref_key_disaster_mode, false)) {
+			//writing into file
+				Log.v("twitter_msg",cv.toString());
+				String msgInput = cv.toString();
+				if (!msgInput.isEmpty()) {
+					String sdcard = Environment.getExternalStorageDirectory().toString();
+					String syncDirectory = sdcard +"/DMS/Working/";
+					File output = new File(syncDirectory, getFilename());
+					if (!output.exists()) {
+						try {
+							output.createNewFile();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					try {
+						FileWriter fw = new FileWriter(output.getAbsoluteFile());
+						BufferedWriter bw = new BufferedWriter(fw);
+						Log.v("File", "Writing " + msgInput);
+						bw.write(msgInput);
+						bw.flush();
+						bw.close();
+						Log.v("File", "written");
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				if (Preferences.getBoolean(ComposeTweetActivity.this, R.string.pref_key_disaster_mode, false)) {
 
 				// our own tweets go into the my disaster tweets buffer
 				cv.put(Tweets.COL_BUFFER, Tweets.BUFFER_TIMELINE | Tweets.BUFFER_MYDISASTER);
@@ -373,6 +408,21 @@ public class ComposeTweetActivity extends ThemeSelectorActivity {
 
 			return result;
 
+		}
+
+		private String getFilename() {
+			String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+			String group = "tweet";
+			String groupID = "1";
+			return ("SMS_" +
+					"50" + "_" +
+					group + "_" +
+					HomeScreenActivity.User_Phone_no + "_" +
+					"defaultMcs" + "_" +
+					"0.0_0.0"+ "_"+
+					timeStamp + "_"+
+					groupID +
+					".txt");
 		}
 
 		@Override

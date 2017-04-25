@@ -228,7 +228,9 @@
 		<service android:name="ch.ethz.twimight.net.twitter.TweetActionService"/>
 		<service android:name="ch.ethz.twimight.net.twitter.NotificationService"/>
 		<service android:name="ch.ethz.twimight.net.DTNConnect.DCService" />
-		<service android:name="ch.ethz.twimight.net.SyncService.SyncService" />
+		<service android:name="ch.ethz.twimight.net.SyncService.SyncService"
+					android:enabled="true"
+					android:exported="true"/>
 
 		<!-- RECEIVERS -->
 

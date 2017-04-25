@@ -135,10 +135,9 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 		getActivity().getApplicationContext().bindService(myServiceIntent, myServiceConnection, Context.BIND_AUTO_CREATE);
 		getActivity().getApplicationContext().startService(myServiceIntent);
 
-		final Intent syncServiceIntent = new Intent(getActivity().getBaseContext(), SyncService.class);
-		getActivity().getBaseContext().bindService(syncServiceIntent, syncServiceConnection, Context.BIND_AUTO_CREATE);
-		Log.v("check","3");
-		getActivity().getBaseContext().startService(syncServiceIntent);
+		final Intent syncServiceIntent = new Intent(getActivity().getApplicationContext(), SyncService.class);
+		getActivity().getApplicationContext().bindService(syncServiceIntent, syncServiceConnection, Context.BIND_AUTO_CREATE);
+		getActivity().getApplicationContext().startService(syncServiceIntent);
 	}
 	//Psync
 	private ServiceConnection syncServiceConnection = new ServiceConnection() {
@@ -147,7 +146,6 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 		public void onServiceConnected(ComponentName className,
 									   IBinder service) {
 			SyncService.SyncServiceBinder binder = (SyncService.SyncServiceBinder) service;
-			Log.v("check","1");
 			syncService = binder.getService();
 			syncServiceBound = true;
 		}
