@@ -141,7 +141,7 @@ public class ScanningService extends Service implements DevicesReceiver.Scanning
 		// set up Bluetooth
 
 		bluetoothHelper = new BluetoothComms(this, mHandler);
-		bluetoothHelper.start();
+		//bluetoothHelper.start();
 		dbHelper = new MacsDBHelper(getApplicationContext());
 		dbHelper.open();
 

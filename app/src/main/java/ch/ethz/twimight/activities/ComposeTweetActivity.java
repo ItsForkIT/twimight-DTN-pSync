@@ -388,6 +388,7 @@ public class ComposeTweetActivity extends ThemeSelectorActivity {
 				insertUri = getContentResolver().insert(
 						Uri.parse("content://" + Tweets.TWEET_AUTHORITY + "/" + Tweets.TWEETS + "/"
 								+ Tweets.TWEETS_TABLE_TIMELINE + "/" + Tweets.TWEETS_SOURCE_DISASTER), cv);
+					Log.v("insert",insertUri.toString());
 				getContentResolver().notifyChange(Tweets.TABLE_TIMELINE_URI, null);
 			} else {
 				// our own tweets go into the timeline buffer

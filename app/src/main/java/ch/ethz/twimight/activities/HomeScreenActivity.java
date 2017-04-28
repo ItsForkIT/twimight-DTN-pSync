@@ -14,17 +14,32 @@ package ch.ethz.twimight.activities;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import ch.ethz.twimight.R;
 import ch.ethz.twimight.fragments.FavoritesFragment;
@@ -32,9 +47,19 @@ import ch.ethz.twimight.fragments.MentionsFragment;
 import ch.ethz.twimight.fragments.TimelineFragment;
 import ch.ethz.twimight.fragments.adapters.FragmentListPagerAdapter;
 import ch.ethz.twimight.listeners.TabListener;
+import ch.ethz.twimight.net.DTNConnect.DCService;
+import ch.ethz.twimight.net.SyncService.SyncService;
+import ch.ethz.twimight.net.opportunistic.ScanningService;
+import ch.ethz.twimight.net.twitter.FileObserverTwitter;
 import ch.ethz.twimight.net.twitter.NotificationService;
+import ch.ethz.twimight.net.twitter.Tweets;
+import ch.ethz.twimight.net.twitter.TwitterUsers;
 import ch.ethz.twimight.util.Constants;
+import ch.ethz.twimight.util.InternalStorageHelper;
 import ch.ethz.twimight.util.Preferences;
+import ch.ethz.twimight.util.SDCardHelper;
+
+import static ch.ethz.twimight.net.twitter.Tweets.PHOTO_PATH;
 
 /**
  * The main Twimight view showing the Timeline, favorites and mentions
@@ -45,7 +70,9 @@ import ch.ethz.twimight.util.Preferences;
 public class HomeScreenActivity extends TwimightBaseActivity {
 
 	private static final String TAG = HomeScreenActivity.class.getName();
-
+	private FileObserverTwitter fileObserverTwitter;
+	private static String sdcard = Environment.getExternalStorageDirectory().toString();
+	public static String workingDirectory = sdcard +"/DMS/Working/";
 	public static boolean running = false;
 	// handler
 //	static Handler handler;
@@ -70,6 +97,12 @@ public class HomeScreenActivity extends TwimightBaseActivity {
 	FragmentListPagerAdapter mPagerAdapter;
 
 	private String[] mFragmentTitles;
+
+	DCService myService;
+	SyncService syncService;
+	private static boolean myServiceBound = false;
+	private static boolean syncServiceBound = false;
+
 
 
 	/**
@@ -138,6 +171,10 @@ public class HomeScreenActivity extends TwimightBaseActivity {
 				.setTabListener(new TabListener(mViewPager));
 		actionBar.addTab(mentionsTab);
 		setSelectedTab(getIntent());
+
+		//fileoberver initaization
+		fileObserverTwitter = new FileObserverTwitter(workingDirectory,this);
+		fileObserverTwitter.startWatching();
 
 	}
 
@@ -265,6 +302,8 @@ public class HomeScreenActivity extends TwimightBaseActivity {
 		mViewPager = null;
 
 		actionBar = null;
+
+		fileObserverTwitter.stopWatching();
 
 		Log.i(TAG, "destroying main activity");
 //		if ((System.currentTimeMillis() - timestamp <= 1 * 60 * 1000L) && locHelper != null && locDBHelper != null

@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import ch.ethz.twimight.R;
+import ch.ethz.twimight.activities.HomeScreenActivity;
 import ch.ethz.twimight.activities.LoginActivity;
 import ch.ethz.twimight.net.DTNConnect.DCService;
 import ch.ethz.twimight.net.SyncService.SyncService;
@@ -172,12 +173,37 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 			myServiceBound = false;
 		}
 	};
+
+	public void disableDisasterMode(Context context) {
+		/*if (getBluetoothInitialState(context) == false) {
+			if (BluetoothAdapter.getDefaultAdapter().isEnabled())
+				BluetoothAdapter.getDefaultAdapter().disable();
+		}
+		ScanningAlarm.stopScanning(context);
+		Intent in = new Intent(context, ScanningService.class);
+		context.stopService(in);*/
+		Log.v("service ","closed");
+		final Intent myServiceIntent = new Intent(context, DCService.class);
+		if (myServiceBound) {
+			context.unbindService(myServiceConnection);
+		}
+		myServiceBound = false;
+		context.stopService(myServiceIntent);
+
+		final Intent syncServiceIntent = new Intent(getActivity().getApplicationContext(), SyncService.class);
+		if (syncServiceBound) {
+			getActivity().getApplicationContext().unbindService(syncServiceConnection);
+		}
+		syncServiceBound = false;
+		getActivity().getApplicationContext().stopService(syncServiceIntent);
+	}
 	/**
 	 * Takes necessary actions when settings are changed (starting services,
 	 * updating preference summary etc.).
 	 */
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
+		final HomeScreenActivity homeScreenActivity = new HomeScreenActivity();
 		if (key.equals(getString(R.string.pref_key_disaster_mode))) {
 			if (preferences.getBoolean(getString(R.string.pref_key_disaster_mode), Constants.DISASTER_DEFAULT_ON) == true) {
 				if (LoginActivity.getTwitterId(getActivity().getBaseContext()) != null
@@ -187,6 +213,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							enableDisasterMode();
+							getActivity().finish();
 						}
 					});
 					builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -200,7 +227,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 					dialog.show();
 				}
 			} else {
-				disableDisasterMode(getActivity().getApplicationContext());
+				disableDisasterMode(getActivity().getBaseContext());
 				getActivity().finish();
 			}
 		} else if (key.equals(getString(R.string.pref_key_tds_communication))) {
@@ -236,28 +263,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 		}
 	}
 
-	public void disableDisasterMode(Context context) {
-		/*if (getBluetoothInitialState(context) == false) {
-			if (BluetoothAdapter.getDefaultAdapter().isEnabled())
-				BluetoothAdapter.getDefaultAdapter().disable();
-		}
-		ScanningAlarm.stopScanning(context);
-		Intent in = new Intent(context, ScanningService.class);
-		context.stopService(in);*/
-		final Intent myServiceIntent = new Intent(context, DCService.class);
-		if (myServiceBound) {
-			context.unbindService(myServiceConnection);
-			myServiceBound = false;
-			context.stopService(myServiceIntent);
-		}
 
-		final Intent syncServiceIntent = new Intent(context, SyncService.class);
-		if (syncServiceBound) {
-			context.unbindService(syncServiceConnection);
-		}
-		syncServiceBound = false;
-		context.stopService(syncServiceIntent);
-	}
 
 	private static boolean getBluetoothInitialState(Context context) {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
